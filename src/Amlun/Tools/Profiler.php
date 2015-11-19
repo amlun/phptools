@@ -27,7 +27,7 @@ class Profiler {
 	 *
 	 * @var array
 	 */
-	protected static $_data = [ ];
+	protected static $_mark = [ ];
 	/**
 	 * 开始一个新的性能统计，返回唯一的token，结束的时候要使用该token
 	 *
@@ -41,8 +41,8 @@ class Profiler {
 	 */
 	public static function start($group, $name) {
 		static $counter = 0;
-		$token = 'kp/' . base_convert ( $counter ++, 10, 32 );
-		Profiler::$_data [$token] = array (
+		$token = 'profiler/' . base_convert ( $counter ++, 10, 32 );
+		Profiler::$_mark [$token] = array (
 				'group' => strtolower ( $group ),
 				'name' => ( string ) $name,
 				'start_time' => microtime ( TRUE ),
@@ -60,8 +60,8 @@ class Profiler {
 	 * @example Profiler::stop($token);
 	 */
 	public static function stop($token) {
-		Profiler::$_data [$token] ['stop_time'] = microtime ( TRUE );
-		Profiler::$_data [$token] ['stop_memory'] = memory_get_usage ();
+		Profiler::$_mark [$token] ['stop_time'] = microtime ( TRUE );
+		Profiler::$_mark [$token] ['stop_memory'] = memory_get_usage ();
 	}
 	/**
 	 * 获取性能信息
@@ -71,7 +71,7 @@ class Profiler {
 	 * @example $info = Profiler::info($token);
 	 */
 	public static function info($token) {
-		return Profiler::$_data [$token];
+		return Profiler::$_mark [$token];
 	}
 	/**
 	 * 删除某性能数据，最后结果不会出现在报表中
@@ -81,7 +81,7 @@ class Profiler {
 	 * @example Profiler::delete($token);
 	 */
 	public static function delete($token) {
-		unset ( Profiler::$_data [$token] );
+		unset ( Profiler::$_mark [$token] );
 	}
 	/**
 	 * 返回当前统计数据按分组排列对应的token
@@ -91,7 +91,7 @@ class Profiler {
 	 */
 	public static function groups() {
 		$groups = array ();
-		foreach ( Profiler::$_data as $token => $mark ) {
+		foreach ( Profiler::$_mark as $token => $mark ) {
 			$groups [$mark ['group']] [$mark ['name']] [] = $token;
 		}
 		return $groups;
@@ -201,7 +201,7 @@ class Profiler {
 	 * @example list($time, $memory) = Profiler::total($token);
 	 */
 	public static function total($token) {
-		$mark = Profiler::$_data [$token];
+		$mark = Profiler::$_mark [$token];
 		if ($mark ['stop_time'] === FALSE) {
 			// The benchmark has not been stopped yet
 			$mark ['stop_time'] = microtime ( TRUE );
