@@ -39,8 +39,7 @@ class Downloader
 		$url = sprintf(self::INFO_URL, $this->_id);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, 'key=value');
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
 		$response = curl_exec($ch);
 		if (curl_errno($ch)) {
 			throw new \Exception('read error when curl');
