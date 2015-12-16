@@ -214,4 +214,13 @@ class Profiler {
 				$memory 
 		);
 	}
+	/**
+	 * 重置Profiler，如果想单独统计某个分组下的内容，可以在此之前调用此方法
+	 *
+	 * @return void
+	 * @see Profiler::delete
+	 */
+	public static function reset() {
+		unset ( Profiler::$_mark );
+	}
 }
