@@ -6,7 +6,7 @@
  * Time: 下午2:56
  */
 
-namespace YouTube;
+namespace Amlun\Tools\YouTube;
 
 class Downloader
 {
