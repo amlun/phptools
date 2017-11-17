@@ -24,6 +24,7 @@ function atoi($str)
             $result = $result * 10 + $item;
         }
     }
+    // TODO 需要考虑整数的溢出
     return $sign ? -$result : $result;
 }
 
